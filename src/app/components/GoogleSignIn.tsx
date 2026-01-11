@@ -62,7 +62,7 @@ export default function GoogleSignIn() {
         mt-4 shadow-sm border-2 border-gray-200'
       activeOpacity={0.8}>
       <View className='flex-row justify-center items-center'>
-        <Ionicons name='logo-google' size={24} color='#FF2A00' />
+        <Ionicons name='logo-google' size={24} color='#FF5F1F' />
         <Text className='text-gray-900 font-semibold text-lg ml-3'>
           Sign in with Google
         </Text>

@@ -1,7 +1,9 @@
 import { Link } from "expo-router";
 import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Text, View, Pressable } from "react-native";
+import { Text, View, Pressable, TouchableOpacity } from "react-native";
+import { useClerk } from '@clerk/clerk-expo'
+import { useRouter } from 'expo-router'
 
 export default function Page() {
   return (
@@ -13,6 +15,20 @@ export default function Page() {
 }
 
 function Content() {
+  const { signOut } = useClerk()
+  const router = useRouter()
+
+  const handleSignOut = async () => {
+    try {
+      await signOut()
+      // Redirect to your desired page
+      router.replace('/')
+    } catch (err) {
+      // See https://clerk.com/docs/guides/development/custom-flows/error-handling
+      // for more info on error handling
+      console.error(JSON.stringify(err, null, 2))
+    }
+  }
   return (
     <View className="flex-1">
       <View className="py-12 md:py-24 lg:py-32 xl:py-48">
@@ -61,6 +77,9 @@ function Content() {
                   </Text>
                 </Pressable>
               </Link>
+              <TouchableOpacity onPress={handleSignOut}>
+                <Text>Sign out</Text>
+              </TouchableOpacity>
             </View>
           </View>
         </View>
@@ -85,6 +104,8 @@ function Header() {
           </Text>
         </Pressable>
       </Link>
+
+
     </View>
   );
 }

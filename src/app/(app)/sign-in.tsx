@@ -1,6 +1,6 @@
 import { useSignIn } from '@clerk/clerk-expo'
 import { Link, useRouter } from 'expo-router'
-import { KeyboardAvoidingView, Platform, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import { Alert, KeyboardAvoidingView, Platform, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import React from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { Ionicons } from '@expo/vector-icons'
@@ -17,6 +17,13 @@ export default function Page() {
   // Handle the submission of the sign-in form
   const onSignInPress = async () => {
     if (!isLoaded) return
+
+    if (!emailAddress || !password) {
+      Alert.alert('Please enter both email and password.');
+      return;
+    }
+
+    setIsLoading(true);
 
     // Start the sign-in process using the email and password provided
     try {
@@ -39,6 +46,8 @@ export default function Page() {
       // See https://clerk.com/docs/custom-flows/error-handling
       // for more info on error handling
       console.error(JSON.stringify(err, null, 2))
+    } finally {
+      setIsLoading(false);
     }
   }
 
@@ -78,6 +87,7 @@ export default function Page() {
                 <Ionicons name="mail-outline" size={20} color="#9CA3AF" />
                 <TextInput
                   autoCapitalize='none'
+                  keyboardType='email-address'
                   value={emailAddress}
                   placeholder='Enter your email'
                   placeholderTextColor='#9CA3AF'
@@ -137,11 +147,9 @@ export default function Page() {
             <View className='flex-row justify-center items-center mt-6'>
               <Text className='text-gray-600'>Don't have an account?</Text>
               <Link href="/sign-up" asChild>
-                <TouchableOpacity>
-                  <Text className='text-orange-500 font-semibold ml-2'>
-                    Sign Up
-                  </Text>
-                </TouchableOpacity>
+                <Text className='text-orange-500 font-semibold ml-2'>
+                  Sign Up
+                </Text>
               </Link>
             </View>
           </View>
@@ -150,7 +158,7 @@ export default function Page() {
           {/* Footer Section */}
 
           <View className='pb-6'>
-            <Text className='text-center text-gray-600 text-sm'>
+            <Text className='text-center text-gray-400 text-sm'>
               Start your fitness journey with Stride.
             </Text>
           </View>
