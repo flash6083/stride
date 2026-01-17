@@ -8,6 +8,7 @@ import { sanityClient } from '@/lib/sanity/client';
 import { Exercise } from '@/lib/sanity/types';
 import { EXERCISE_QUERY } from '@/lib/sanity/queries';
 
+
 const Exercises = () => {
     const [searchQuery, setSearchQuery] = useState('');
     const [refreshing, setRefreshing] = useState(false);

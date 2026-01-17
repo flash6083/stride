@@ -55,9 +55,10 @@ const ExerciseCard = ({
     showChevron = false
 }: ExerciseCardProps) => {
     return (
+
         <TouchableOpacity
             onPress={onPress}
-            className="bg-white rounded-3xl mb-4 border border-gray-50 shadow-sm"
+            className="bg-white rounded-xl mb-4 border border-gray-100"
         >
             <View className="flex-row px-5 py-5">
                 <View className="w-24 h-24 bg-gray-50 rounded-2xl mr-4 overflow-hidden">
