@@ -4,7 +4,7 @@ import React from 'react'
 import { Ionicons } from '@expo/vector-icons';
 import { urlFor } from '@/lib/sanity/client';
 
-const getDificultyColor = (difficulty: string) => {
+export const getDifficultyColor = (difficulty: string) => {
     switch (difficulty) {
         case 'beginner':
             return 'bg-emerald-50'
@@ -17,7 +17,7 @@ const getDificultyColor = (difficulty: string) => {
     }
 }
 
-const getDifficultyText = (difficulty: string) => {
+export const getDifficultyText = (difficulty: string) => {
     switch (difficulty) {
         case 'beginner':
             return 'text-emerald-700'
@@ -91,7 +91,7 @@ const ExerciseCard = ({
                     <View className="flex-row items-center justify-between mt-2">
                         <View className="flex-row items-center gap-2">
                             <View className={`w-2 h-2 rounded-full ${getDifficultyDot(item.difficulty)}`} />
-                            <View className={`px-3.5 py-1.5 rounded-full ${getDificultyColor(item.difficulty)}`}>
+                            <View className={`px-3.5 py-1.5 rounded-full ${getDifficultyColor(item.difficulty)}`}>
                                 <Text className={`text-xs font-bold uppercase ${getDifficultyText(item.difficulty)}`}>
                                     {item.difficulty}
                                 </Text>

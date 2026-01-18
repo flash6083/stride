@@ -16,6 +16,14 @@ export default function Layout() {
         <Stack>
             <Stack.Protected guard={isSignedIn}>
                 <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+                <Stack.Screen name="exercise-detail"
+                    options={{
+                        title: 'Exercise Detail',
+                        headerShown: false,
+                        presentation: 'modal',
+                        animationTypeForReplace: 'push',
+                        gestureEnabled: true
+                    }} />
             </Stack.Protected>
 
             <Stack.Protected guard={!isSignedIn}>
