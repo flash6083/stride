@@ -1,9 +1,10 @@
-import { View, Text, Touchable, TouchableOpacity, Alert, ScrollView, Image, Linking, ActivityIndicator } from 'react-native'
+import { View, Text, TouchableOpacity, Alert, ScrollView, Image, Linking, ActivityIndicator } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useLocalSearchParams, useRouter } from 'expo-router'
 import { Ionicons } from '@expo/vector-icons'
 import { Exercise } from '@/lib/sanity/types'
+import Markdown from "react-native-markdown-display";
 import { sanityClient, urlFor } from '@/lib/sanity/client'
 import { SINGLE_EXERCISE_QUERY } from '@/lib/sanity/queries'
 import { getDifficultyText, getDifficultyColor } from '../components/ExerciseCard'
@@ -35,6 +36,36 @@ const ExerciseDetail = () => {
         };
         fetchExercise();
     }, [id]);
+
+    const getAIGudidance = async () => {
+        if (!exercise) {
+            Alert.alert('Error', 'Exercise data is not available for AI guidance.');
+            return;
+        }
+        setAILoading(true);
+        try {
+            const response = await fetch("/api/ai", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    exerciseName: exercise.name,
+                })
+            });
+            if (!response.ok) {
+                throw new Error('Failed to fetch AI guidance');
+            }
+            const data = await response.json();
+            setAIGuidance(data.message);
+        } catch (error) {
+            Alert.alert('Error', 'Failed to get AI guidance. Please try again later.');
+            console.error('Error fetching AI guidance:', error);
+            setAIGuidance('Failed to get AI guidance. Please try again later.');
+        } finally {
+            setAILoading(false);
+        }
+    };
 
     return (
         <SafeAreaView className="flex-1 bg-white">
@@ -134,6 +165,87 @@ const ExerciseDetail = () => {
                                         </TouchableOpacity>
                                     </View>
                                 )}
+                                {/* AI Guidance*/}
+
+                                {(aiGuidance || aiLoading) && (
+                                    <View className='mb-6'>
+                                        <View className='flex-row items-center mb-3'>
+                                            <Ionicons name='bulb' size={24} color='#F59E0B' />
+                                            <Text className='text-xl font-semibold text-gray-800 ml-2'>
+                                                AI Fitness Coach Says ...
+                                            </Text>
+                                        </View>
+                                        {aiLoading ? (
+                                            <View className='bg-gray-50 rounded-xl p-4 items-center'>
+                                                <ActivityIndicator size='small' color='#EF4444' />
+                                                <Text className='text-gray-600 font-medium mt-2'>
+                                                    Generating AI guidance...
+                                                </Text>
+                                            </View>
+                                        ) : (
+                                            <View className='bg-orange-50 rounded-xl p-4 border-orange-500'>
+                                                <Markdown style={{
+                                                    body: {
+                                                        paddingBottom: 20,
+                                                    },
+                                                    heading2: {
+                                                        fontSize: 18,
+                                                        fontWeight: 'bold',
+                                                        color: '#1f2937',
+                                                        marginTop: 12,
+                                                        marginBottom: 6
+                                                    },
+                                                    heading3: {
+                                                        fontSize: 16,
+                                                        fontWeight: 600,
+                                                        color: '#374151',
+                                                        marginTop: 8,
+                                                        marginBottom: 4
+                                                    }
+                                                }}>
+                                                    {aiGuidance || ''}
+                                                </Markdown>
+                                            </View>
+                                        )}
+                                    </View>
+                                )}
+
+                                {/* -------------- */}
+
+                                {/*Action Buttons*/}
+                                <View className='mt-8 gap-2'>
+                                    {/*AI Coach Button*/}
+                                    <TouchableOpacity className={`rounded-xl py-4
+                                        items-center ${aiLoading ? "bg-gray-400"
+                                            : aiGuidance ? "bg-green-500"
+                                                : "bg-indigo-600"
+                                        }`}
+                                        onPress={getAIGudidance}
+                                        disabled={aiLoading}
+                                    >
+                                        {
+                                            aiLoading ? (
+                                                <View className='flex-row items-center'>
+                                                    <ActivityIndicator size='small' color='white' />
+                                                    <Text className='text-white font-bold text-lg ml-2'>
+                                                        Loading ...
+                                                    </Text>
+                                                </View>
+                                            ) : (
+                                                <Text className='text-white font-bold text-lg'>
+                                                    {aiGuidance ? "Refresh AI Guidance" : "Get AI Guidance"}
+                                                </Text>
+                                            )
+                                        }
+                                    </TouchableOpacity>
+                                    <TouchableOpacity
+                                        className='bg-gray-200 rounded-xl py-4 items-center'
+                                        onPress={() => router.back()}>
+                                        <Text className='text-gray-800 font-bold text-lg'>
+                                            Close
+                                        </Text>
+                                    </TouchableOpacity>
+                                </View>
                             </View>
                         </ScrollView>
                     </>
