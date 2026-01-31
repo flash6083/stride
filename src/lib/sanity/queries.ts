@@ -30,3 +30,29 @@ export const WORKOUTS_QUERY = `
     }
   }
 `;
+
+export const SINGLE_WORKOUT_QUERY = `
+  *[_type == "workout" && _id == $workoutId][0] {
+    _id,
+    _type,
+    _createdAt,
+    date,
+    duration,
+    exercises[] {
+      exercise->{
+        _id,
+        name,
+        description
+      },
+      sets[] {
+        reps,
+        weight,
+        weightUnit,
+        _type,
+        _key
+      },
+      _type,
+      _key
+    }
+  }
+`;

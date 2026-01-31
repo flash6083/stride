@@ -14,6 +14,7 @@
 
 // Source: schema.json
 export type ExerciseReference = {
+  name: any;
   _ref: string;
   _type: "reference";
   _weak?: boolean;
