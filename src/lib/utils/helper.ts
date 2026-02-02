@@ -1,3 +1,7 @@
+
+import { Workout } from "../sanity/types";
+// Date and time related functions
+
 export const formatDate = (dateString: string) => {
     const date = new Date(dateString);
     const today = new Date();
@@ -51,4 +55,44 @@ export function formatDuration(seconds: number): string {
             return `${minutes}m`;
         }
     }
+}
+
+export const formatTime = (dateString?: string) => {
+    if (!dateString) return "";
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-US', {
+        hour: "numeric",
+        minute: "2-digit",
+        hour12: true
+    })
+}
+
+// Workout related functions
+
+export const getTotalSets = (workout: Workout) => {
+    return (
+        workout.exercises?.reduce((total, exercise) => {
+            return total + (exercise.sets?.length || 0);
+        }, 0) || 0
+    )
+}
+
+export const getExerciseNames = (workout: Workout) => {
+    return (
+        workout.exercises?.map((ex) => ex.exercise?.name).filter(Boolean) || []
+    )
+}
+
+export const getTotalVolume = (workout: Workout) => {
+    let totalVolume = 0;
+    let unit = "kg";
+    workout?.exercises?.forEach((exercise) => {
+        exercise.sets?.forEach((set) => {
+            if (set.weight && set.reps) {
+                totalVolume += set.weight * set.reps;
+                unit = set.weightUnit || 'kg';
+            }
+        })
+    })
+    return { volume: totalVolume, unit };
 }

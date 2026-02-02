@@ -7,7 +7,7 @@ import { useUser } from '@clerk/clerk-expo'
 import { Workout } from '@/lib/sanity/types'
 import { useLocalSearchParams, useRouter } from 'expo-router'
 import { Ionicons } from '@expo/vector-icons'
-import { formatDate, formatWorkoutDuration } from '@/lib/utils/helper'
+import { formatDate, formatWorkoutDuration, getExerciseNames, getTotalSets } from '@/lib/utils/helper'
 
 const History = () => {
   const { user } = useUser();
@@ -52,20 +52,6 @@ const History = () => {
   const onRefresh = () => {
     setRefreshing(true);
     fetchWorkouts();
-  }
-
-  const getTotalSets = (workout: Workout) => {
-    return (
-      workout.exercises?.reduce((total, exercise) => {
-        return total + (exercise.sets?.length || 0);
-      }, 0) || 0
-    )
-  }
-
-  const getExerciseNames = (workout: Workout) => {
-    return (
-      workout.exercises?.map((ex) => ex.exercise?.name).filter(Boolean) || []
-    )
   }
 
   return (
