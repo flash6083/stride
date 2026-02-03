@@ -67,6 +67,11 @@ export const formatTime = (dateString?: string) => {
     })
 }
 
+export const getWorkoutDuration = (seconds, minutes) => {
+    return `${minutes.toString().padStart(2, '0')}: 
+    ${seconds.toString().padStart(2, '0')}`;
+}
+
 // Workout related functions
 
 export const getTotalSets = (workout: Workout) => {

@@ -4,7 +4,6 @@ export async function POST(request: Request) {
     const { workoutId }: { workoutId: string } = await request.json();
     try {
         await sanityAdminClient.delete(workoutId as string);
-        console.log("Workout deleted successfully: ", workoutId);
         return Response.json({
             success: true,
             message: 'Workout deleted successfully',
