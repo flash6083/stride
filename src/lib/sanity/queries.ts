@@ -56,3 +56,10 @@ export const SINGLE_WORKOUT_QUERY = `
     }
   }
 `;
+
+export const EXERCISE_BY_NAME_QUERY = `
+  *[_type == "exercise" && name == $name][0] {
+    _id,
+    name
+  }
+`;

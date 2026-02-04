@@ -1,4 +1,7 @@
-import { View, Text, Modal, TouchableOpacity, TextInput, FlatList, RefreshControl, Alert } from 'react-native'
+import {
+    View, Text, Modal, TouchableOpacity, TextInput, FlatList,
+    RefreshControl, Alert
+} from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { useRouter } from 'expo-router';
 import { useWorkoutStore } from 'store/workout-store';
@@ -8,6 +11,7 @@ import ExerciseCard from './ExerciseCard';
 import { Exercise } from '@/lib/sanity/types';
 import { sanityClient } from '@/lib/sanity/client';
 import { EXERCISE_QUERY } from '@/lib/sanity/queries';
+
 
 interface ExerciseSelectionModalProps {
     visible: boolean;
@@ -52,6 +56,12 @@ const ExerciseSelectionModal = ({ visible, onClose }: ExerciseSelectionModalProp
             fetchExercises();
         }
     }, [visible]);
+
+    useEffect(() => {
+        const filtered = exercises.filter((exercise) =>
+            exercise.name.toLowerCase().includes(searchQuery.toLowerCase()));
+        setFilteredExercises(filtered);
+    }, [searchQuery, exercises])
 
     return (
         <Modal visible={visible} animationType='slide' presentationStyle='pageSheet'

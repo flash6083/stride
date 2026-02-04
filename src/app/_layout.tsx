@@ -10,7 +10,7 @@ export default function Layout() {
   return (
     <SafeAreaProvider>
       <ClerkProvider tokenCache={tokenCache}>
-        <StatusBar translucent />
+        <StatusBar barStyle="dark-content" />
         <Slot />
       </ClerkProvider>
     </SafeAreaProvider>
