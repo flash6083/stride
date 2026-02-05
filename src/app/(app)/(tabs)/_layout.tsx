@@ -1,7 +1,7 @@
 import { Tabs } from 'expo-router';
-import AntDesign from '@expo/vector-icons/AntDesign';
 import { Image } from 'react-native';
 import { useUser } from '@clerk/clerk-expo';
+import { Ionicons } from '@expo/vector-icons';
 
 export default function Layout() {
     const { user } = useUser();
@@ -19,7 +19,7 @@ export default function Layout() {
                     headerShown: false,
                     title: "Home",
                     tabBarIcon: ({ color, size }) =>
-                        <AntDesign name="home" size={size} color={color} />
+                        <Ionicons name="home-outline" size={size} color={color} />
                 }}
             />
 
@@ -29,7 +29,7 @@ export default function Layout() {
                     headerShown: false,
                     title: "Exercises",
                     tabBarIcon: ({ color, size }) =>
-                        <AntDesign name="book" size={size} color={color} />
+                        <Ionicons name="bookmarks-outline" size={size} color={color} />
                 }}
             />
 
@@ -39,7 +39,7 @@ export default function Layout() {
                     headerShown: false,
                     title: "Workout",
                     tabBarIcon: ({ color, size }) =>
-                        <AntDesign name="plus-circle" size={size} color={color} />
+                        <Ionicons name="add-circle" size={size} color={color} />
                 }}
             />
 
@@ -59,7 +59,7 @@ export default function Layout() {
                     headerShown: false,
                     title: "History",
                     tabBarIcon: ({ color, size }) =>
-                        <AntDesign name="clock-circle" size={size} color={color} />
+                        <Ionicons name="time-outline" size={size} color={color} />
                 }}
             />
 

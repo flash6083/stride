@@ -36,6 +36,8 @@ export default function ProfilePage() {
     } catch (error) {
       console.log('Error fetching workouts:', error);
       Alert.alert('Error', 'Failed to fetch workouts. Please try again later.');
+    } finally {
+      setLoading(false);
     }
   }
 
