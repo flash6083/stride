@@ -67,6 +67,14 @@ export const formatTime = (dateString?: string) => {
     })
 }
 
+export const formatJoinDate = (date: Date) => {
+    return date.toLocaleDateString('en-US', {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric'
+    })
+}
+
 export const getWorkoutDuration = (seconds, minutes) => {
     return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
 }
@@ -99,4 +107,20 @@ export const getTotalVolume = (workout: Workout) => {
         })
     })
     return { volume: totalVolume, unit };
+}
+
+// GET WORKOUT STATS FOR PROFILE PAGE
+
+export const getWorkoutStats = (workouts: Workout[]) => {
+    const totalWorkouts = workouts.length;
+    const totalDuration = workouts.reduce(
+        (sum, workout) => sum + (workout.duration || 0), 0);
+    const averageDuration = totalWorkouts > 0 ?
+        Math.round(totalDuration / totalWorkouts) : 0;
+
+    return {
+        totalWorkouts,
+        totalDuration,
+        averageDuration
+    }
 }
